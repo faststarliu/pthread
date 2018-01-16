@@ -1,17 +1,17 @@
 # linux线程同步-屏障 
 ## 一.概述                                                   
 barrier(屏障)与互斥量，读写锁，自旋锁不同，它不是用来保护临界区的。相反，它跟条件变量一样，是用来协同多线程一起工作！！！
-<br/>条件变量是多线程间传递状态的改变来达到协同工作的效果。屏障是多线程各自做自己的工作，如果某一线程完成了工作，就等待在屏障那里，直到其他线程的工作都完成了，再一起做别的事。举个通俗的例子：
-<br/>1.对于条件变量。在接力赛跑里，1号队员开始跑的时候，2，3，4号队员都站着不动，直到1号队员跑完一圈，把接力棒给2号队员，2号队员收到接力棒后就可以跑了，跑完再给3号队员。这里这个接力棒就相当于条件变量，条件满足后就可以由下一个队员(线程)跑。
-<br/>2.对于屏障。在百米赛跑里，比赛没开始之前，每个运动员都在赛场上自由活动，有的热身，有的喝水，有的跟教练谈论。比赛快开始时，准备完毕的运动员就预备在起跑线上，如果有个运动员还没准备完(除去特殊情况)，他们就一直等，直到运动员都在起跑线上，裁判喊口号后再开始跑。这里的起跑线就是屏障，做完准备工作的运动员都等在起跑线，直到其他运动员也把准备工作做完！
+条件变量是多线程间传递状态的改变来达到协同工作的效果。屏障是多线程各自做自己的工作，如果某一线程完成了工作，就等待在屏障那里，直到其他线程的工作都完成了，再一起做别的事。举个通俗的例子：
+#### 1.对于条件变量。在接力赛跑里，1号队员开始跑的时候，2，3，4号队员都站着不动，直到1号队员跑完一圈，把接力棒给2号队员，2号队员收到接力棒后就可以跑了，跑完再给3号队员。这里这个接力棒就相当于条件变量，条件满足后就可以由下一个队员(线程)跑。
+#### 2.对于屏障。在百米赛跑里，比赛没开始之前，每个运动员都在赛场上自由活动，有的热身，有的喝水，有的跟教练谈论。比赛快开始时，准备完毕的运动员就预备在起跑线上，如果有个运动员还没准备完(除去特殊情况)，他们就一直等，直到运动员都在起跑线上，裁判喊口号后再开始跑。这里的起跑线就是屏障，做完准备工作的运动员都等在起跑线，直到其他运动员也把准备工作做完！
 ## 二.函数接口                                           
 ### 1.创建屏障
 
-<br/>#include <pthread.h>
-<br/>int pthread_barrier_init(pthread_barrier_t *restrict barrier, const pthread_barrierattr_t *restrict attr, unsigned count);
-<br/>barrier：pthread_barrier_t结构体指针
-<br/>attr：屏障属性结构体指针
-<br/>count：屏障等待的线程数目，即要count个线程都到达屏障时，屏障才解除，线程就可以继续执行
+#include <pthread.h>
+int pthread_barrier_init(pthread_barrier_t *restrict barrier, const pthread_barrierattr_t *restrict attr, unsigned count);
+barrier：pthread_barrier_t结构体指针
+attr：屏障属性结构体指针
+count：屏障等待的线程数目，即要count个线程都到达屏障时，屏障才解除，线程就可以继续执行
 
 ### 2.等待
 #include <pthread.h>
@@ -38,10 +38,10 @@ void err_exit(const char *err_msg){
     printf("error:%s\n", err_msg);
     exit(1);
 }
-<br/>void *thread_fun(void *arg){
-<br/>    int result;
-<br/>    char *thr_name = (char *)arg;
-<br/>     /* something work */
+void *thread_fun(void *arg){
+    int result;
+    char *thr_name = (char *)arg;
+    /* something work */
 
     printf("线程%s工作完成...\n", thr_name);
  
@@ -52,11 +52,11 @@ void err_exit(const char *err_msg){
     else if (result == 0)
         printf("线程%s，wait后返回为0\n", thr_name);
  
-<br/>   return NULL;
-<br/>}
+   return NULL;
+}
  
 int main(void){
-<br/>     pthread_t tid_1, tid_2, tid_3;
+     pthread_t tid_1, tid_2, tid_3;
  
      /* 初始化屏障 */
      pthread_barrier_init(&barrier, NULL, PTHREAD_BARRIER_SIZE);
@@ -74,8 +74,8 @@ int main(void){
      printf("所有线程工作已完成...\n");
 
      sleep(1);
-<br/>     return 0;
-<br/>  }
+     return 0;
+  }
  
  ```
 <br/>28行是线程自己要做的工作，62行的sleep(1)让所有线程有足够的时间把自己的返回值打印出来。编译运行：
