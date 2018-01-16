@@ -24,16 +24,16 @@ int pthread_barrier_destroy(pthread_barrier_t *barrier);
 
 ## 三.简单例子                                           
 写个简单的例子，主线程等待其他线程都完成工作后自己再向下执行，类似pthread_join()函数！
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <pthread.h>
+<br/>#include <stdio.h>
+<br/>#include <stdlib.h>
+<br/>#include <string.h>
+<br/>#include <unistd.h>
+<br/>#include <pthread.h>
 /* 屏障总数 */
-#define PTHREAD_BARRIER_SIZE 4
+<br/>#define PTHREAD_BARRIER_SIZE 4
 /* 定义屏障 */
-pthread_barrier_t barrier;
-void err_exit(const char *err_msg){
+<br/>pthread_barrier_t barrier;
+<br/>void err_exit(const char *err_msg){
     printf("error:%s\n", err_msg);
     exit(1);
 }
