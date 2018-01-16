@@ -34,13 +34,13 @@ int pthread_barrier_destroy(pthread_barrier_t *barrier);
 /* 定义屏障 */
 <br/>pthread_barrier_t barrier;
 <br/>void err_exit(const char *err_msg){
-    printf("error:%s\n", err_msg);
-    exit(1);
+<br/>    printf("error:%s\n", err_msg);
+<br/>    exit(1);
 }
-void *thread_fun(void *arg){
-    int result;
-    char *thr_name = (char *)arg;
-     /* something work */
+<br/>void *thread_fun(void *arg){
+<br/>    int result;
+<br/>    char *thr_name = (char *)arg;
+<br/>     /* something work */
 
     printf("线程%s工作完成...\n", thr_name);
  
