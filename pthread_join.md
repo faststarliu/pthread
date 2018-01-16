@@ -34,10 +34,9 @@ pthread_join使一个线程等待另一个线程结束。
 <br/>　　pthread_attr_init(&attr);
 <br/>　　pthread_attr_setdetachstate(&attr,  PTHREAD_CREATE_DETACHED);
 <br/>　　pthread_create(&pthreadid,  &attr,  myprocess,  &arg);
-<br/>## 警告：
+## 警告：
 　　在线程设置为joinable后，可以调用pthread_detach()使之成为detached。但是相反的操作则不可以。还有，如果线程已经调用pthread_join()后，则再调用pthread_detach()则不会有任何效果。
-
-线程可以通过自身执行结束来结束，也可以通过调用pthread_exit()来结束线程的执行。另外，线程甲可以被线程乙被动结束。这个通过调用pthread_cancel()来达到目的。
+<br/>线程可以通过自身执行结束来结束，也可以通过调用pthread_exit()来结束线程的执行。另外，线程甲可以被线程乙被动结束。这个通过调用pthread_cancel()来达到目的。
 
 <br/>int pthread_cancel(pthread_t thread);
 
