@@ -26,8 +26,8 @@ pthread_join使一个线程等待另一个线程结束。
     所有线程都有一个线程号，也就是threadid，其类型为pthread_t。 通过调用pthread_self()函数可以获得自身的线程号。
 　　如果你的主线程，也就是main函数执行的那个线程，在你其他线程退出之前就已经退出，那么带来的bug则不可估量。通过pthread_join函数会让主线程阻塞，直到所有线程都已经退出。
 <br/>　　int pthread_join(pthread_t thread, void **value_ptr);
-<br/>　　　　thread：等待退出线程的线程号。
-<br/>　　　　value_ptr：退出线程的返回值。
+<br/>　　thread：等待退出线程的线程号。
+<br/>　　value_ptr：退出线程的返回值。
 　 可以通过pthread_join()函数来使主线程阻塞等待其他线程退出，这样主线程可以清理其他线程的环境。但是还有一些线程，更喜欢自己来清理退出 的状态，他们也不愿意主线程调用pthread_join来等待他们。我们将这一类线程的属性称为detached（分离的）。如果我们在调用 pthread_create()函数的时候将属性设置为NULL，则表明我们希望所创建的线程采用默认的属性，也就是jionable（此时不是detached）。
 如果需要将属性 设置为detached。则应该如下设定：
 <br/>　　pthread_attr_t  attr;
