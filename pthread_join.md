@@ -11,11 +11,11 @@ pthread_join使一个线程等待另一个线程结束。
 主线程是在第一个线程处挂起。
 比如有：
 
-pthread_join(1,NULL);
-pthread_join(2,NULL);
-pthread_join(3,NULL);
-pthread_join(4,NULL);
-pthread_join(5,NULL);
+<br/>pthread_join(1,NULL);
+<br/>pthread_join(2,NULL);
+<br/>pthread_join(3,NULL);
+<br/>pthread_join(4,NULL);
+<br/>pthread_join(5,NULL);
   实际上主线程在pthread_join(1,NULL);这里就挂起了，在等待1号线程结束后再等待2号线程。
 当然会出现3,4,5比1,2先结束的情况。主线程还是在等待1,2结束后，发现3,4,5其实早已经结束了，就会回收3,4,5的资源，然后主线程再退出。
  
