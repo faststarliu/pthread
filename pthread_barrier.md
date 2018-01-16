@@ -37,7 +37,6 @@ int pthread_barrier_destroy(pthread_barrier_t *barrier);
     printf("error:%s\n", err_msg);
     exit(1);
 }
-
 void *thread_fun(void *arg){
     int result;
     char *thr_name = (char *)arg;
@@ -52,11 +51,11 @@ void *thread_fun(void *arg){
     else if (result == 0)
         printf("线程%s，wait后返回为0\n", thr_name);
  
-   return NULL;
-}
+<br/>   return NULL;
+<br/>}
  
 int main(void){
-     pthread_t tid_1, tid_2, tid_3;
+<br/>     pthread_t tid_1, tid_2, tid_3;
  
      /* 初始化屏障 */
      pthread_barrier_init(&barrier, NULL, PTHREAD_BARRIER_SIZE);
@@ -74,7 +73,7 @@ int main(void){
      printf("所有线程工作已完成...\n");
 
      sleep(1);
-     return 0;
+<br/>     return 0;
  }
  
  
