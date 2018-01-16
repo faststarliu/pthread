@@ -10,20 +10,20 @@ pthread_join使一个线程等待另一个线程结束。
 在多线程编程的时候我们往往都是以for循环的形式调用pthread_join函数，既然运行prhtead_join之后主线程就阻塞了，也没法调用后面的pthread_join，那么以for循环有什么用呢？
 主线程是在第一个线程处挂起。
 比如有：
+
 pthread_join(1,NULL);
 pthread_join(2,NULL);
 pthread_join(3,NULL);
 pthread_join(4,NULL);
 pthread_join(5,NULL);
-
   实际上主线程在pthread_join(1,NULL);这里就挂起了，在等待1号线程结束后再等待2号线程。
 当然会出现3,4,5比1,2先结束的情况。主线程还是在等待1,2结束后，发现3,4,5其实早已经结束了，就会回收3,4,5的资源，然后主线程再退出。
  
 
 pthread_join使一个线程等待另一个线程结束。
-
-			代码中如果没有pthread_join；主线程会很快结束从而使整个进程结束，从而使创建的线程没有机会开始执行就结束了。加入pthread_join后，主线程会一直等待直到等待的线程结束自己才结束，使创建的线程有机会执行。
-　　所有线程都有一个线程号，也就是threadid，其类型为pthread_t。 通过调用pthread_self()函数可以获得自身的线程号。
+代码中如果没有pthread_join；主线程会很快结束从而使整个进程结束，从而使创建的线程没有机会开始执行就结束了。加入pthread_join后，
+主线程会一直等待直到等待的线程结束自己才结束，使创建的线程有机会执行。
+    所有线程都有一个线程号，也就是threadid，其类型为pthread_t。 通过调用pthread_self()函数可以获得自身的线程号。
 　　如果你的主线程，也就是main函数执行的那个线程，在你其他线程退出之前就已经退出，那么带来的bug则不可估量。通过pthread_join函数会让主线程阻塞，直到所有线程都已经退出。
 　　int pthread_join(pthread_t thread, void **value_ptr);
 　　　　thread：等待退出线程的线程号。
