@@ -62,8 +62,304 @@ pthread_testcancel();
 •	异步
 •	执行序列中按照标准定义的点
 •	调用pthread_cancel()
-void pthread_testcancel(void);
 当线程取消功能处于启用状态且取消状态设置为延迟状态时，pthread_testcancel()函数有效。如果在取消功能处处于禁用状态下调用pthread_testcancel()，则该函数不起作用。
 请务必仅在线程取消线程操作安全的序列中插入pthread_testcancel()。除通过pthread_testcancel()调用以编程方式建立的取消点意外，pthread标准还指定了几个取消点。
-测试退出点,就是测试cancel信号
 
+
+## 线程取消点例子
+### 线程中没有取消点
+  (线程中是一个死循环，循环中没有取消点，在主程序中调用pthread_cancel对子线程没有影响)
+ 1 #include <pthread.h>
+ 2 
+ 3 #include <stdio.h>
+ 4 
+ 5 #include <unistd.h>
+ 6 
+ 7  
+ 8 
+ 9 void* thr(void* arg)
+10 
+11 {
+12 
+13          pthread_setcancelstate(PTHREAD_CANCEL_ENABLE,NULL);
+14 
+15          pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED,NULL);
+16 
+17          
+18 
+19          while(1)
+20 
+21          {
+22 
+23                    ;
+24 
+25          }
+26 
+27          printf("thread is not running\n");
+28 
+29          sleep(2);
+30 
+31 }
+32 
+33  
+34 
+35 int main()
+36 
+37 {
+38 
+39          pthread_t th1;
+40 
+41          int err;
+42 
+43          err = pthread_create(&th1,NULL,thr,NULL);
+44 
+45          pthread_cancel(th1);
+46 
+47          pthread_join(th1,NULL);
+48 
+49          printf("Main thread is exit\n");
+50 
+51          return 0;
+52 
+53 }
+54 
+ 
+### 子线程中有取消点
+（printf系统调用可引起阻塞，是系统默认的取消点，但是最好是在其前后加pthread_testcancel()函数）
+ 1 #include <pthread.h>
+ 2 
+ 3 #include <stdio.h>
+ 4 
+ 5 #include <unistd.h>
+ 6 
+ 7  
+ 8 
+ 9 void* thr(void* arg)
+10 
+11 {
+12 
+13          pthread_setcancelstate(PTHREAD_CANCEL_ENABLE,NULL);
+14 
+15          pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED,NULL);
+16 
+17          
+18 
+19          while(1)
+20 
+21          {
+22 					  pthread_testcancel();
+23                    printf("thread is running\n");
+pthread_testcancel();
+24 
+25          }
+26 
+27          printf("thread is not running\n");
+28 
+29          sleep(2);
+30 
+31 }
+32 
+33  
+34 
+35 int main()
+36 
+37 {
+38 
+39          pthread_t th1;
+40 
+41          int err;
+42 
+43          err = pthread_create(&th1,NULL,thr,NULL);
+44 
+45          pthread_cancel(th1);
+46 
+47          pthread_join(th1,NULL);
+48 
+49          printf("Main thread is exit\n");
+50 
+51          return 0;
+52 
+53 }
+54 
+55 
+
+### 异步取消
+（在异步取消时，线程不会去寻找取消点，而是立即取消）
+ 1 #include <pthread.h>
+ 2 
+ 3 #include <stdio.h>
+ 4 
+ 5 #include <unistd.h>
+ 6 
+ 7  
+ 8 
+ 9 void* thr(void* arg)
+10 
+11 {
+12 
+13          pthread_setcancelstate(PTHREAD_CANCEL_ENABLE,NULL);
+14 
+15          pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS,NULL);
+16 
+17          
+18 
+19          while(1)
+20 
+21          {
+22 
+23                    ;
+24 
+25          }
+26 
+27          printf("thread is not running\n");
+28 
+29          sleep(2);
+30 
+31 }
+32 
+33  
+34 
+35 int main()
+36 
+37 {
+38 
+39          pthread_t th1;
+40 
+41          int err;
+42 
+43          err = pthread_create(&th1,NULL,thr,NULL);
+44 
+45          pthread_cancel(th1);
+46 
+47          pthread_join(th1,NULL);
+48 
+49          sleep(1);
+50 
+51          printf("Main thread is exit\n");
+52 
+53          return 0;
+54 
+55 }
+56 
+57 
+
+### 设置不可取消
+（不可取消）
+ 1 #include <pthread.h>
+ 2 
+ 3 #include <stdio.h>
+ 4 
+ 5 #include <unistd.h>
+ 6 
+ 7  
+ 8 
+ 9 void* thr(void* arg)
+10 
+11 {
+12 
+13          pthread_setcancelstate(PTHREAD_CANCEL_DISABLE,NULL);
+14 
+15          pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED,NULL);
+16 
+17          
+18 
+19          while(1)
+20 
+21       {   
+22 
+23                    printf("thread is running\n");
+24 
+25          }
+26 
+27          printf("thread is not running\n");
+28 
+29          sleep(2);
+30 
+31 }
+32 
+33  
+34 
+35 int main()
+36 
+37 {
+38 
+39          pthread_t th1;
+40 
+41          int err;
+42 
+43          err = pthread_create(&th1,NULL,thr,NULL);
+44 
+45          pthread_cancel(th1);
+46 
+47          pthread_join(th1,NULL);
+48 
+49          sleep(1);
+50 
+51          printf("Main thread is exit\n");
+52 
+53          return 0;
+54 
+55 }
+56 
+57 
+
+### 设置取消点
+ 
+ 1 #include <pthread.h>
+ 2 
+ 3 #include <stdio.h>
+ 4 
+ 5 #include <unistd.h>
+ 6 
+ 7  
+ 8 
+ 9 void* thr(void* arg)
+10 
+11 {
+12 
+13          pthread_setcancelstate(PTHREAD_CANCEL_ENABLE,NULL);
+14 
+15          pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED,NULL);
+16 
+17          
+18 
+19          while(1)
+20 
+21          {
+22 
+23                    ;
+24 
+25                    pthread_testcancel();
+26 
+27          }
+28 
+29          printf("thread is not running\n");
+30 
+31          sleep(2);
+32 
+33 }
+34 
+35  
+36 
+37 int main()
+38 
+39 {
+40 
+41          pthread_t th1;
+42 
+43          int err;
+44 
+45          err = pthread_create(&th1,NULL,thr,NULL);
+46 
+47          pthread_cancel(th1);
+48 
+49          pthread_join(th1,NULL);
+50 
+51          sleep(1);
+52 
+53          printf("Main thread is exit\n");
+54 
+55          return 0;
+56 
+57 }
+58 
