@@ -4,17 +4,16 @@ pthread_cancel调用并不等待线程终止，它只提出请求。线程在取
 直到到达某个取消点(CancellationPoint)。取消点是线程检查是否被取消并按照请求进行动作的一个位置.
 
 ## 与线程取消相关的pthread函数
-int pthread_cancel(pthread_t thread)
-发送终止信号给thread线程，如果成功则返回0，否则为非0值。发送成功并不意味着thread会终止。
+int pthread_cancel(pthread_t thread)；发送终止信号给thread线程，如果成功则返回0，否则为非0值。发送成功并不意味着thread会终止。
 
 ## 设置本线程对Cancel信号的反应，state有两种值：
-int pthread_setcancelstate(int state,   int *oldstate)   
-PTHREAD_CANCEL_ENABLE（缺省）
-PTHREAD_CANCEL_DISABLE
-分别表示收到信号后设为CANCLED状态和忽略CANCEL信号继续运行；old_state如果不为NULL则存入原来的Cancel状态以便恢复。   
-返回：
-         成功之后返回0。失败返回错误号，错误号说明如下：
-         EINVAL：状态不是PTHREAD_CANCEL_ENABLE或者PTHREAD_CANCEL_DISABLE
+<br /> int pthread_setcancelstate(int state,   int *oldstate)；   
+<br /> PTHREAD_CANCEL_ENABLE（缺省）
+<br />PTHREAD_CANCEL_DISABLE
+<br />分别表示收到信号后设为CANCLED状态和忽略CANCEL信号继续运行；old_state如果不为NULL则存入原来的Cancel状态以便恢复。   
+<br />返回：
+<br />         成功之后返回0。失败返回错误号，错误号说明如下：
+<br />         EINVAL：状态不是PTHREAD_CANCEL_ENABLE或者PTHREAD_CANCEL_DISABLE
 
 ## 设置本线程取消动作的执行时机，type由两种取值：
 int pthread_setcanceltype(int type, int *oldtype)   
