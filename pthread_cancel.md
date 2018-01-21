@@ -68,6 +68,7 @@ pthread_testcancel();
 
 ## 线程取消点例子
 ### 线程中没有取消点
+···
   (线程中是一个死循环，循环中没有取消点，在主程序中调用pthread_cancel对子线程没有影响)
  1 #include <pthread.h>
  2 
@@ -122,9 +123,10 @@ pthread_testcancel();
 51          return 0;
 52 
 53 }
-54 
+54 ···
  
 ### 子线程中有取消点
+···
 （printf系统调用可引起阻塞，是系统默认的取消点，但是最好是在其前后加pthread_testcancel()函数）
  1 #include <pthread.h>
  2 
@@ -182,8 +184,9 @@ pthread_testcancel();
 53 }
 54 
 55 
-
+···
 ### 异步取消
+···
 （在异步取消时，线程不会去寻找取消点，而是立即取消）
  1 #include <pthread.h>
  2 
@@ -242,8 +245,9 @@ pthread_testcancel();
 55 }
 56 
 57 
-
+···
 ### 设置不可取消
+···
 （不可取消）
  1 #include <pthread.h>
  2 
@@ -301,10 +305,10 @@ pthread_testcancel();
 54 
 55 }
 56 
-57 
+57 ···
 
 ### 设置取消点
- 
+ ···
  1 #include <pthread.h>
  2 
  3 #include <stdio.h>
@@ -362,4 +366,4 @@ pthread_testcancel();
 55          return 0;
 56 
 57 }
-58 
+58 ···
