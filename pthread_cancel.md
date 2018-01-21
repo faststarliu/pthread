@@ -70,15 +70,10 @@ pthread_testcancel();
 ### 线程中没有取消点
 ···
   (线程中是一个死循环，循环中没有取消点，在主程序中调用pthread_cancel对子线程没有影响)
- 1 #include <pthread.h>
- 2 
- 3 #include <stdio.h>
- 4 
- 5 #include <unistd.h>
- 6 
- 7  
- 8 
- 9 void* thr(void* arg)
+#include <pthread.h>
+#include <stdio.h>
+#include <unistd.h>
+void* thr(void* arg)
 10 
 11 {
 12 
