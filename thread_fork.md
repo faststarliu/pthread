@@ -103,8 +103,11 @@ int main(void) {
 int pthread_atfork(void (*prepare)(void), void (*parent)(void), void (*child)(void));
 Returns: 0 if OK, error number on failure.
 ```
-<br />使用函数pthread_atfork,我们可以建立起三个函数来帮组清除锁的锁定状态。prepare函数在父进程调用函数fork创建子进程之前被父进程调用，该fork handler的作用是获取父进程定义的所有锁。parent fork handler是在父进程fork了子进程但是fork函数还没有返回之前由父进程调用执行的，该fork handler的作用是解除所有prepare fork handler获取到的锁的锁定状态;child fork handler在子进程中fork函数返回之前被调用，就像parent fork handler一样，child fork handler必须释放所有prepare fork handler获取到的锁。 
-<br />注意，这些锁并没有被锁定一次，解锁两次，因为在子进程被创建的时候，它获取到了父进程定义的锁的所有状态，因为prepare锁定了所有锁，父进程和子进程会在相同的内存内容下开始运行，当父进程以及子进程分别解除它们锁的拷贝的锁定状态的时候，新的内存空间将被分配给子进程，并且父进程的内存内容将被拷贝到子进程(copy-on-write)，所以看起来就是父进程锁定了父进程以及子进程的所有的锁，然后父进程和子进程分别解除两份处于不同地址空间的锁的锁定状态，就像执行了如下的一个序列:
+#### 使用函数pthread_atfork,我们可以建立起三个函数来帮组清除锁的锁定状态。
+##### prepare函数在父进程调用函数fork创建子进程之前被父进程调用，该fork handler的作用是获取父进程定义的所有锁；
+##### parent fork handler是在父进程fork创建子进程后，fork函数还没有返回之前在父进程中调用执行的，该fork handler的作用是解除父进程中所有prepare fork handler获取到的锁的锁定状态；
+##### child fork handler在子进程中fork函数返回之前在子进程中调用，就像parent fork handler一样，child fork handler必须释放子进程中所有prepare fork handler获取到的锁。 
+<br />注意，这些锁并没有被锁定一次，解锁两次，因为在子进程被创建的时候，它获取到了父进程定义的锁的所有状态(比如锁定了所有锁)，因为prepare锁定了所有锁，父进程和子进程会在相同的内存内容下开始运行，当父进程以及子进程分别解除它们锁的拷贝的锁定状态的时候，新的内存空间将被分配给子进程，并且父进程的内存内容将被拷贝到子进程(copy-on-write)，所以看起来就是父进程锁定了父进程以及子进程的所有的锁，然后父进程和子进程分别解除两份处于不同地址空间的锁的锁定状态，就像执行了如下的一个序列:
 
 <br />父进程锁定所有的锁;
 <br />子进程锁定所有的锁;
@@ -151,7 +154,7 @@ Returns: 0 if OK, error number on failure.
 
 
 
-
+## 代码
 
 ```
 #include "apue.h"
