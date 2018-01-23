@@ -20,7 +20,7 @@ UNIX上C++程序设计守则3
 能引起什么问题呢?
 
 那看看实例吧.一执行下面的代码,在子进程的执行开始处调用doit()时,发生死锁的机率会很高.
-
+···
 void* doit(void*) {
     static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
     pthread_mutex_lock(&mutex);
@@ -44,7 +44,7 @@ int main(void) {
         pthread_join(t, 0); //
          // 等待子线程结束
 }
-
+···
 
 以下是说明死锁的理由：
 一般的,fork做如下事情
