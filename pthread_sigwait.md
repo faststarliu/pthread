@@ -1,4 +1,4 @@
-int sigwait(const sigset_t *restrict sigmask,int* restrict signo); 
+## int sigwait(const sigset_t *restrict sigmask,int* restrict signo); 
 
 sigwait函数一直阻塞直到*sigmask指定的任何一个信号被挂起为止，然后从挂起信号集中删除那个信号，并解除对它的阻塞。
 
@@ -11,15 +11,15 @@ sigwait函数一直阻塞直到*sigmask指定的任何一个信号被挂起为�
 挂起就是未决pending（未处理的）.
 信号类似于处理事务
 
-1。有事情发生了（信号产生）
+1.有事情发生了（信号产生）
 
-2。该事情通知了有关部门，他们已登记在一个未处理事件的本子上（信号传递给目标进程，目标进程登记该信号到本进程的task_struct结构）
+2.该事情通知了有关部门，他们已登记在一个未处理事件的本子上（信号传递给目标进程，目标进程登记该信号到本进程的task_struct结构）
 
-3。有关部门定期检查未处理事件的本子，发现有事情没处理时，就注销该事件（目标进程会检测是否有信号等待处理，如果有未决信号等待处理且该信号没有被进程阻塞，则在运行相应的信号处理函数前，进程会把信号在未决信号链中占有的结构卸掉）
+3.有关部门定期检查未处理事件的本子，发现有事情没处理时，就注销该事件（目标进程会检测是否有信号等待处理，如果有未决信号等待处理且该信号没有被进程阻塞，则在运行相应的信号处理函数前，进程会把信号在未决信号链中占有的结构卸掉）
 
 4。最后有关部门去实施事件的处理。（进程注销信号后，立即执行相应的信号处理函数，执行完毕后，信号的本次发送对进程的影响彻底结束。）
 
-int sigwait(const sigset_t *restrict sigmask, int* restrict signo);
+## int sigwait(const sigset_t *restrict sigmask, int* restrict signo);
 
 sigwait函数一直阻塞直到*sigmask指定的任何一个信号被挂起为止，然后从挂起信号集中删除那个信号，并解除对它的阻塞。
 当sigwait返回时，从挂起信号集中删除的信号的个数被存储在signo指定的那个位置中。
