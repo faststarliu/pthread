@@ -1,6 +1,7 @@
-## int sigwait(const sigset_t \*restrict sigmask,int\* restrict signo); 
+## int sigwait(const sigset_t \*restrict sigmask,int \* restrict signo); 
 
-sigwait函数一直阻塞直到sigmask指定的任何一个信号被挂起为止，然后从挂起信号集中删除那个信号，并解除对它的阻塞。
+sigwait函数一直阻塞调用者，直到sigmask指定的任何一个信号被挂起为止，然后从挂起信号集中删除那个信号，并解除对它的阻塞。
+（sigmask 是一堆被屏蔽的信号集，如果其中这里中的一个信号捕捉到，那么sigwait函数会吧这个信号从sigmask中删除，这时候调用者可以运行了。）
 
 当sigwait返回时，从挂起信号集中删除的信号的个数被存储在signo指定的那个位置中。
 
