@@ -127,7 +127,7 @@ Returns: 0 if OK, error number on failure.
 <br />模块B中的prepare fork handler被调用来获取模块B的锁;
 <br />子进程被创建;
 <br />模块B的child fork handler被调用来释放子进程中所有模块B的锁;
-<br />模块B的child fork handler被调用来释放子进程中所有模块A的锁;
+<br />模块A的child fork handler被调用来释放子进程中所有模块A的锁;
 <br />fork函数返回到子进程;
 <br />模块B的parent fork handler被调用来释放所有模块B的锁;
 <br />模块A的parent fork handler被调用来释放所有模块A的锁;
@@ -156,7 +156,7 @@ Returns: 0 if OK, error number on failure.
 <br />*3：如果使用Linux的话,查看pthread_atfork函数的man手册比较好.关于这些流程都有一些解释.
 <br />*4：Solaris和HP-UX等
 <br />*5：从fork后到exec执行的这段时间
-<br />*6：≈execve系统调用
+<br />*6：execve系统调用
 <br />*7：仅仅做四则演算的话就是fork-safe的
 
 
